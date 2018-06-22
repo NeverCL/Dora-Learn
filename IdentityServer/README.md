@@ -8,6 +8,22 @@ Client
 
 IdentityServer4
 
+## 核心
+
+Client
+
+1. 为每个 Application 应用，分配1个 Client
+
+Token：
+
+- IdentityToken
+- AccessToken
+- AuthorizationCode
+- RefreshToken
+
+Flow：
+
+
 ## 示例
 
 ## 注意
