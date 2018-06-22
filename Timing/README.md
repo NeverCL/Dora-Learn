@@ -8,7 +8,7 @@ Timer 有2个
 
     0毫秒后启动,间隔1000毫秒运行 obj => Console.Write ("hello") , 其中obj 由第2个参数 new Object() 控制，通过 Dispose 可停止实例。
 
-    适用于一次性的任务
+    System.Threading.Timer 是基于线程，它使用回调方法并由线程池线程提供服务。单次运行时间过长不会影响下次触发。线程安全
 
 1. System.Timers.Timer
 
@@ -20,4 +20,6 @@ Timer 有2个
 
     实例化Timer的时候指定定时时间，Elapsed 指的Timer执行的方法。只有手动调用Start 才会开始。通过 timer.Stop 可暂停实例。
 
-    适用于反复暂停和启动的任务
+    System.Timers.Timer是基于服务对System.Threading.Timer的报装，不推荐使用。适用于反复暂停和启动的任务。实例方法线程不安全。
+
+还有1个 System.Windows.Forms.Timer 是应用于WinForm中的
