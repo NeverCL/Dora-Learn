@@ -16,7 +16,9 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential();
+                .AddDeveloperSigningCredential()
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryApiResources(Config.GetApiResources());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
