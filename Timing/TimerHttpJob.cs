@@ -10,22 +10,29 @@ namespace Timing {
     public class TimerHttpJob : IDisposable {
         Timer timer;
         HttpClient client;
+
         public TimerHttpJob (int period, string url, string path, string targetValue, string userId) {
             Period = period;
+            Url = url;
+            Path = path;
+            TargetValue = targetValue;
+            UserId = userId;
             client = new HttpClient ();
-            timer = new Timer (async obj => {
-                if (await IsMatch (url, path, targetValue))
-                    Notify (userId);
-            }, null, 0, period * 1000);
+            timer = new Timer (async obj => await Core (), null, 0, period * 1000);
+        }
+
+        public async Task Core () {
+            if (IsActive && await IsMatch ())
+                Notify (UserId);
         }
 
         private void Notify (string userId) {
             throw new NotImplementedException ();
         }
 
-        public async Task<bool> IsMatch (string url, string path, string targetValue) {
-            var rst = await new HttpClient ().GetStringAsync (url);
-            return (string) JToken.Parse (rst).SelectToken (path) == targetValue;
+        public async Task<bool> IsMatch () {
+            var rst = await new HttpClient ().GetStringAsync (Url);
+            return (string) JToken.Parse (rst).SelectToken (Path) == TargetValue;
         }
 
         /// <summary>
@@ -46,6 +53,7 @@ namespace Timing {
 
         [StringLength (32)]
         public string UserId { get; set; }
+        public bool IsActive { get; set; }
 
         public void Dispose () {
             timer.Dispose ();
