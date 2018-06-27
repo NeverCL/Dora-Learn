@@ -30,6 +30,7 @@ Flow：
 - Implicit
   - 只传输 OpenID 协议
 - Hybrid
+  - Implicit + Code 模式
   - 传输 OpenID + OAuth2 协议
   - 在 Implicit 的基础上，添加 client secret(code 转 token需要), ResponseType = "id_token code"(openID 协议只有 id_token)，scope 添加 OAuth2 需要的API
 
