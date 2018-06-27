@@ -31,7 +31,7 @@ Flow：
   - 只传输 OpenID 协议
 - Hybrid
   - 传输 OpenID + OAuth2 协议
-  - 在 Implicit 的基础上，添加 client secret(code 转 token需要), ResponseType = "id_token code"(openID 协议只有 id_token)，scope 选择指定的API
+  - 在 Implicit 的基础上，添加 client secret(code 转 token需要), ResponseType = "id_token code"(openID 协议只有 id_token)，scope 添加 OAuth2 需要的API
 
 ## 示例
 
@@ -44,3 +44,5 @@ Flow：
     设置临时签署凭据：默认使用 tempkey.rsa 作为文件名，判断文件是否存在，不存在则创建 CreateRsaSecurityKey ，通过json序列化保存到文件中。
     在开发环境 或者 单个 IdentityServer 实例的时候，都可以使用 AddDeveloperSigningCredential()
     在多个 IdentityServer 实例的时候，需要使用统一的方式。如：同1个 tempkey.rsa 或者 AddSigningCredential()
+
+1. OpenID协议(客户端|服务端) 默认使用 /connect/xx 如：/connect/token,/connect/userinfo
