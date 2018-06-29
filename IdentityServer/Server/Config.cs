@@ -7,7 +7,7 @@ namespace Server {
     public class Config {
 
         /// <summary>
-        /// OpenID Resources
+        /// Identity Resources
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<IdentityResource> GetIdentityResources()
@@ -16,11 +16,12 @@ namespace Server {
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource("roles",new []{ClaimTypes.Role,"role"})
             };
         }
 
         /// <summary>
-        /// OAuth2 Resources
+        /// Api Resources
         /// </summary>
         /// <returns></returns>
         public static List<ApiResource> GetApiResources () {
@@ -30,23 +31,26 @@ namespace Server {
         }
 
         /// <summary>
-        /// Client
+        /// Clients
         /// </summary>
         /// <returns></returns>
         public static List<Client> GetClients () {
             return new List<Client> () {
                 new Client {
                     ClientId = "clientId", // Require
+                    RequireConsent = false,
                     ClientSecrets = new [] { new Secret ("secret".Sha512 ()) },
                     AllowedGrantTypes = GrantTypes.Implicit, // Require
-                    AllowedScopes = new [] { "apiId","openid","profile" },  // openid 和 profile 是 OpenID 定义的标准资源
-                    ClientName = "clientName",
-                    RedirectUris = {"http://localhost:5001/signin-oidc"}       // OpenID 会校验客户端参数，通常为 http://api/signin-oidc
+                    AllowedScopes = new [] { "roles","openid","profile" },  // openid 和 profile 是 OpenID 定义的标准资源
+                    RedirectUris = {"http://localhost:6001/signin-oidc","http://localhost:6002/signin-oidc"}       // OpenID 会校验客户端参数，通常为 http://api/signin-oidc
                 }
             };
         }
 
-
+        /// <summary>
+        /// Users
+        /// </summary>
+        /// <returns></returns>
         public static List<TestUser> GetUsers(){
             return new List<TestUser>{
                 new TestUser {
@@ -56,13 +60,14 @@ namespace Server {
                     Claims = new []
                     {
                         new Claim("name", "Alice"),
-                        new Claim("website", "https://alice.com")
+                        new Claim("website", "https://alice.com"),
+                        new Claim(ClaimTypes.Role, "admin"),
+                        new Claim(ClaimTypes.Role, "admin2"),
+                        new Claim("role", "admin3")
                     }
                 }
             };
         }
-
-
 
     }
 }
