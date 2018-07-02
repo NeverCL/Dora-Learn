@@ -28,7 +28,8 @@ Flow：
 - ResourceOwnerPassword
   - OAuth2
 - Implicit
-  - 只传输 OpenID 协议
+  - 默认只传输 Id Token(如果需要传输 Access Token 需要设置AllowAccessTokensViaBrowser = true)，所有的令牌都通过浏览器传输。
+  - Id Token(浏览器) + Access Token(浏览器)
   - Client
     - 配置 OpenID 协议
       - ClientId、SignInScheme、Authority
@@ -46,7 +47,7 @@ Flow：
       - `await HttpContext.SignInAsync(user.SubjectId, user.Username, props);`
       - `return Redirect(model.ReturnUrl)`
 - Hybrid
-  - Implicit + Code 模式
+  - Id Token(浏览器) + Access Token(Code 模式)。Access Token 由后端通过 Code 获取。
   - 传输 OpenID + OAuth2 协议
   - 在 Implicit 的基础上，添加 client secret(code 转 token需要), ResponseType = "id_token code"(openID 协议只有 id_token)，scope 添加 OAuth2 需要的API
 
@@ -69,13 +70,29 @@ Flow：
     在 Implicit 模式中，定义 Identity Resource 包含新的 Claim Types。同时在 Client 中，添加对应的 scope
     在 Hybird 模式中，需再配置 AlwaysIncludeUserClaimsInIdToken = true
 
-1. 如何传递 Client Cliams
-
-1. 自定义 Error 页面
-
-1. 如何注销登录
-
 1. `JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();` 根据实际需要，是否禁用映射功能
 
     开启：在客户端会显示成原始数据
     关闭(默认)：在客户端映射成标准格式的数据
+
+1. 如何显示 UserId
+
+    默认开启映射的情况下，使用 ClaimTypes.NameIdentifier。
+    手动关闭映射的情况下，使用 JwtClaimTypes.Subject 或 "sub"。
+
+1. 如何传递 Client Cliams
+
+1. 自定义 Error 页面
+
+    通过 `await _interaction.GetErrorContextAsync(errorId)` 获取错误详情
+
+1. 如何注销登录
+
+    ```csharp
+    await HttpContext.SignOutAsync();
+    await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
+    ```
+
+## 默认配置
+
+`OpenIdConnectDefaults.AuthenticationScheme = "OpenIdConnect"`
