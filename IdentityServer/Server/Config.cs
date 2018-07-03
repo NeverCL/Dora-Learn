@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -26,7 +27,7 @@ namespace Server {
         /// <returns></returns>
         public static List<ApiResource> GetApiResources () {
             return new List<ApiResource> () {
-                new ApiResource("apiId","apiDisplayName")   // apiId 不仅仅作为 apiName ，同时也添加到 Scopes
+                new ApiResource("api1","apiDisplayName")   // apiId 不仅仅作为 apiName ，同时也添加到 Scopes
             };
         }
 
@@ -43,6 +44,25 @@ namespace Server {
                     AllowedGrantTypes = GrantTypes.Implicit, // Require
                     AllowedScopes = new [] { "roles","openid","profile" },  // openid 和 profile 是 OpenID 定义的标准资源
                     RedirectUris = {"http://localhost:6001/signin-oidc","http://localhost:6002/signin-oidc"}       // OpenID 会校验客户端参数，通常为 http://api/signin-oidc
+                },// JavaScript Client
+                new Client
+                {
+                    ClientId = "js",
+                    ClientName = "JavaScript Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+
+                    RedirectUris =           { "http://localhost:6002/callback.html" },
+                    PostLogoutRedirectUris = { "http://localhost:6002/index.html" },
+                    AllowedCorsOrigins =     { "http://localhost:6002" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                    }
                 }
             };
         }

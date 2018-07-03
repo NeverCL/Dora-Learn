@@ -1,9 +1,23 @@
 import React from 'react'
 import { render } from 'react-dom';
-import DatePicker from './AntDatePicker'
+import { LocaleProvider, Row, Col, DatePicker } from 'antd';
+import './index.css';
+import Login from './Login';
+
+let zhCN = null;
+if (process.env.NODE_ENV === 'production') {
+    // let antd = require('antd'); // 生产环境
+    zhCN = antd.locales.zh_CN;
+    console.log('production')
+} else {
+    zhCN = require('antd/lib/locale-provider/zh_CN'); // 开发环境
+    console.log('develop')
+}
 
 var root = document.createElement('div');
 root.id = 'root';
 document.body.insertBefore(root, document.body.firstChild);
 
-render(<div>hello</div>, root);
+render(<LocaleProvider locale={zhCN}>
+    <Login />
+</LocaleProvider>, root);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
 using IdentityServer4.Test;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 
 namespace Server
 {
@@ -77,11 +79,14 @@ namespace Server
                 await context.SignInAsync(user.SubjectId, user.Username, props);
                 context.Response.Redirect(returnUrl);
             }else if (context.Request.Path == "/logout"){
-                await context.Response.WriteAsync("logout lai le");
+                await context.SignOutAsync();
+                var userId = context.User.Claims.FirstOrDefault(x=>x.Type == JwtClaimTypes.Subject)?.Value;
+                await _events.RaiseAsync(new UserLogoutSuccessEvent(userId, context.User.Identity.Name));
             }else if (context.Request.Path == "/error"){
+                // var userId = context.User.Identity.GetUserId();
                 var errorId = context.Request.Query["errorId"];
                 var message = await _interaction.GetErrorContextAsync(errorId);
-                await context.Response.WriteAsync(message.ErrorDescription);
+                await context.Response.WriteAsync(message?.ErrorDescription ?? "a");
             }else{
                 await _next.Invoke(context);
             }
