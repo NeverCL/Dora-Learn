@@ -1,15 +1,12 @@
 var express = require('express');
-var ejs = require('ejs');
-
 var app = express();
 
 app.use(express.static('dist'));
 
-app.engine('.html', ejs.__express);
-app.set('view engine', 'html');
-app.set('views', "dist");
 app.use(function (req, res) {
-    res.render('index.html');
+    res.sendFile('index.html', { root: 'dist' });
 });
 
 app.listen(8080);
+
+console.log('listen http://localhost:8080 ok')

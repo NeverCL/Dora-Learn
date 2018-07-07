@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { LocaleProvider, Row, Col, DatePicker } from 'antd';
 import './index.css';
 import Login from './Login';
+import RouterDemo from './Router';
 
 let zhCN = null;
 if (process.env.NODE_ENV === 'production') {
@@ -19,5 +20,5 @@ root.id = 'root';
 document.body.insertBefore(root, document.body.firstChild);
 
 render(<LocaleProvider locale={zhCN}>
-    <Login />
+    <RouterDemo />
 </LocaleProvider>, root);
