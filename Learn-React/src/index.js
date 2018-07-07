@@ -4,6 +4,7 @@ import { LocaleProvider, Row, Col, DatePicker } from 'antd';
 import './index.css';
 import Login from './Login';
 import RouterDemo from './Router';
+import Banner from './Anim/Banner.jsx';
 
 let zhCN = null;
 if (process.env.NODE_ENV === 'production') {
@@ -20,5 +21,5 @@ root.id = 'root';
 document.body.insertBefore(root, document.body.firstChild);
 
 render(<LocaleProvider locale={zhCN}>
-    <RouterDemo />
+    <Banner />
 </LocaleProvider>, root);

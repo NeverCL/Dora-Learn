@@ -12,7 +12,7 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
-        host: '192.168.0.75'
+        // host: '192.168.0.75'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
