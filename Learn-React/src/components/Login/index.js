@@ -1,4 +1,4 @@
-import React from 'react'
+import React from '../../../../../../AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
 import { Row, Col, Form, Icon, Input, Button, Checkbox } from 'antd';
 import './index.css';
 

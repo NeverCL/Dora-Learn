@@ -1,7 +1,8 @@
 import React from 'react'
-import BannerAnim, { Element } from 'rc-banner-anim';
-import TweenOne from 'rc-tween-one';
+import BannerAnim, { Element } from 'rc-banner-anim/lib';
+import TweenOne from 'rc-tween-one/lib';
 import 'rc-banner-anim/assets/index.css';
+import './index.css';
 
 export default function () {
     const BgElement = Element.BgElement;
