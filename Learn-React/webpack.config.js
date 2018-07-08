@@ -37,9 +37,12 @@ module.exports = {
             },
             exclude: /node_modules/
         }, {
-            test: /\.(png|svg|jpg|gif|ico)$/,
+            test: /\.(png|jpg|gif)$/,
             use: [
-                'file-loader'
+                {
+                    loader: 'file-loader',
+                    options: { outputPath: 'static', publicPath: 'static' }
+                }
             ]
         }]
     },
@@ -47,7 +50,6 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({ minify: true, hash: true }),
         new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css" }),
-        // new CopyWebpackPlugin([{ from: 'src/asserts/', to: 'dist/statics' }])
     ],
     optimization: {
         splitChunks: {

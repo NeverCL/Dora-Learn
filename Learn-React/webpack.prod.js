@@ -31,10 +31,20 @@ module.exports = {
             },
             exclude: /node_modules/
         }, {
-            test: /\.(png|svg|jpg|gif|ico)$/,
-            loader: 'file-loader',
+            test: /\.(png|jpg|gif|ico)$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: { outputPath: 'static', publicPath: 'static' }
+                }
+            ]
+        }, {
+            test: /\.html$/,
+            loader: 'html-loader',
             options: {
-                publicPath: 'static'
+                root: path.resolve(__dirname, 'dist/static'),
+                // 除了img的src,还可以继续配置处理更多html引入的资源
+                attrs: ['img:src', 'img:data-src', 'link:href']
             }
         }]
     },
