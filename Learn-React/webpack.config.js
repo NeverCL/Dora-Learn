@@ -12,6 +12,7 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
+        historyApiFallback: true
         // host: '192.168.0.75'
     },
     output: {
@@ -35,12 +36,18 @@ module.exports = {
                 ]
             },
             exclude: /node_modules/
+        }, {
+            test: /\.(png|svg|jpg|gif|ico)$/,
+            use: [
+                'file-loader'
+            ]
         }]
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({ minify: true, hash: true }),
-        new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css" })
+        new MiniCssExtractPlugin({ filename: "[name].css", chunkFilename: "[id].css" }),
+        // new CopyWebpackPlugin([{ from: 'src/asserts/', to: 'dist/statics' }])
     ],
     optimization: {
         splitChunks: {
