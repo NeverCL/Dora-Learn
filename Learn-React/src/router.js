@@ -2,6 +2,7 @@ import React from 'react';
 import { LocaleProvider } from 'antd';
 import { Router, Route, Switch, Link } from 'dva/router';
 import img from './asserts/1.png'
+import Basic from './layouts/basic.jsx';
 
 let zhCN = null;
 if (process.env.NODE_ENV === 'production') {
@@ -19,8 +20,9 @@ function RouterConfig({ history }) {
             <Router history={history}>
                 <Switch>
                     <Route path='/' component={() => (<div>hello <Link to="/app">app</Link> <img src={img} /> </div>)} exact />
-                    <Route path='/app' component={() => (<div>App Page <Link to="/world">world</Link></div>)} />
-                    <Route path='/world' component={() => (<div>World Page  <Link to="/app">app</Link></div>)} />
+                    <Route path='/home' component={() => (<Basic />)} />
+                    <Route path='/app' component={() => (<div>App Page <Link to="/world">world</Link> </div>)} />
+                    <Route path='/world' component={() => (<div>World Page  <Link to="/app">app</Link> </div>)} />
                 </Switch>
             </Router>
         </LocaleProvider>
